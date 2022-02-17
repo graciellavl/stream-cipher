@@ -1,7 +1,7 @@
 def prga(S, n):
     # S array dari KSA
     # n panjang plaintext
-    
+
     i = 0
     j = 0
     key = []
@@ -11,9 +11,7 @@ def prga(S, n):
         j = (j + S[i]) % 256
 
         #Swap
-        temp = S[i]
-        S[i] = S[j]
-        S[j] = temp
+        S[i], S[j] = S[j], S[i]
 
         K = S[(S[i] + S[j]) % 256]
         key.append(K)
