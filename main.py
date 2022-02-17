@@ -2,6 +2,8 @@ from email.policy import default
 import PySimpleGUI as sg                        # Part 1 - The import
 from pathlib import Path
 
+from myowncipher import myowncipher
+
 sg.theme('DarkAmber')
 
 # Define the window's contents
@@ -57,6 +59,29 @@ while True:
         window.Element(key="-INPUT-").Update("")
         window.Element(key="OUTPUTFILE").Update("")
 
+    if event == "Encrypt":
+        if (values["-INPUT-"]):
+            cipher = myowncipher(
+                bytes(values["KEY"], "utf-8"), text)
+            with open(outputfile, 'wb') as f:
+                f.write(cipher)
+        else:
+            cipher = myowncipher(
+                bytes(values["KEY"], "latin-1"), bytes(values["PLAINTEXT"], "latin-1"))
+            cipher = str(cipher, 'latin-1')
+            window.Element(key='CIPHERTEXT').Update(cipher)
+
+    elif event == "Decrypt":
+        if (values["-INPUT-"]):
+            plain = myowncipher(
+                bytes(values["KEY"], "utf-8"), text)
+            with open(outputfile, 'wb') as f:
+                f.write(plain)
+        else:
+            plain = myowncipher(
+                bytes(values["KEY"], "latin-1"), bytes(values["CIPHERTEXT"], "latin-1"))
+            plain = str(plain, 'latin-1')
+            window.Element(key='PLAINTEXT').Update(plain)
 
     if event == sg.WIN_CLOSED:
         break
