@@ -8,6 +8,9 @@ sg.theme('DarkAmber')
 
 # Define the window's contents
 layout = [[sg.Text("Welcome to stream cipher!")],     # Part 2 - The Layout
+          [sg.Radio('Text', "Type", default=True, key="Text"),
+           sg.Radio('File (Image, Audio, Video)', "Type", default=False, key="File")
+           ],
           [
               sg.Text("Input File Name"),
     sg.Input(key='-INPUT-'),
@@ -47,10 +50,10 @@ while True:
                 print("Error: ", e)
 
     if event == "Save Plain to File":
-        with open(outputfile, 'wb') as f:
+        with open("output/" + outputfile, 'wb') as f:
             f.write(bytes(values["PLAINTEXT"], "utf-8"))
     if event == "Save Cipher to File":
-        with open(outputfile, 'wb') as f:
+        with open("output/" + outputfile, 'wb') as f:
             f.write(bytes(values["CIPHERTEXT"], "utf-8"))
     if event == "RESET":
         window.Element(key="PLAINTEXT").Update("")
@@ -60,10 +63,10 @@ while True:
         window.Element(key="OUTPUTFILE").Update("")
 
     if event == "Encrypt":
-        if (values["-INPUT-"]):
+        if (values["File"]):
             cipher = myowncipher(
                 bytes(values["KEY"], "utf-8"), text)
-            with open(outputfile, 'wb') as f:
+            with open("output/" + outputfile, 'wb') as f:
                 f.write(cipher)
         else:
             cipher = myowncipher(
@@ -72,10 +75,10 @@ while True:
             window.Element(key='CIPHERTEXT').Update(cipher)
 
     elif event == "Decrypt":
-        if (values["-INPUT-"]):
+        if (values["File"]):
             plain = myowncipher(
                 bytes(values["KEY"], "utf-8"), text)
-            with open(outputfile, 'wb') as f:
+            with open("output/" + outputfile, 'wb') as f:
                 f.write(plain)
         else:
             plain = myowncipher(
